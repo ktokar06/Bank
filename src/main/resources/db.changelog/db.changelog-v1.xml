@@ -1,0 +1,159 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <!-- Создание таблицы users -->
+    <changeSet id="1" author="bank">
+        <createTable tableName="users" remarks="Таблица пользователей системы">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_username"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_email"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Добавляем индекс для поиска по email -->
+        <createIndex tableName="users" indexName="idx_users_email">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Создание таблицы cards -->
+    <changeSet id="2" author="bank">
+        <createTable tableName="cards" remarks="Таблица банковских карт">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="card_number" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_cards_number"/>
+            </column>
+            <column name="card_holder_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cvv" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="daily_limit" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_limit" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_cards_user_id"
+                             referencedTableName="users" referencedColumnNames="id"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Индекс для поиска карт по пользователю -->
+        <createIndex tableName="cards" indexName="idx_cards_user_id">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Создание таблицы transactions -->
+    <changeSet id="3" author="bank">
+        <createTable tableName="transactions" remarks="Таблица транзакций по картам">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="card_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_transactions_card_id"
+                             referencedTableName="cards" referencedColumnNames="id"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Индекс для поиска транзакций по карте -->
+        <createIndex tableName="transactions" indexName="idx_transactions_card_id">
+            <column name="card_id"/>
+        </createIndex>
+
+        <!-- Индекс для сортировки по дате -->
+        <createIndex tableName="transactions" indexName="idx_transactions_created_at">
+            <column name="created_at"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Создание таблицы transaction_limits -->
+    <changeSet id="4" author="bank">
+        <createTable tableName="transaction_limits" remarks="Лимиты операций">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="limit_type" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_limit_type"/>
+            </column>
+            <column name="limit_value" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Начальные данные: лимиты операций -->
+    <changeSet id="5" author="bank">
+        <insert tableName="transaction_limits">
+            <column name="limit_type" value="DAILY_WITHDRAWAL"/>
+            <column name="limit_value" value="1000.00"/>
+        </insert>
+        <insert tableName="transaction_limits">
+            <column name="limit_type" value="MONTHLY_WITHDRAWAL"/>
+            <column name="limit_value" value="5000.00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="6" author="bank">
+        <modifyDataType tableName="cards" columnName="expiration_date" newDataType="DATE"/>
+    </changeSet>
+
+
+</databaseChangeLog>
