@@ -1,10 +1,12 @@
 package com.example.bank.dto;
 
-import com.bank.model.Card;
+
+import com.example.bank.model.Card;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 
 @Data
 public class CardDto {

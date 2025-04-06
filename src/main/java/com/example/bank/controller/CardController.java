@@ -1,13 +1,15 @@
 package com.example.bank.controller;
 
-import com.bank.dto.CardDto;
-import com.bank.service.CardService;
+
+import com.example.bank.dto.CardDto;
+import com.example.bank.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/cards")

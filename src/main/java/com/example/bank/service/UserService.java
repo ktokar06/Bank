@@ -1,9 +1,11 @@
 package com.example.bank.service;
 
-import com.bank.dto.RegisterRequest;
-import com.bank.dto.UserDto;
+
+import com.example.bank.dto.RegisterRequest;
+import com.example.bank.dto.UserDto;
 
 import java.util.List;
+
 
 public interface UserService {
     UserDto register(RegisterRequest request);

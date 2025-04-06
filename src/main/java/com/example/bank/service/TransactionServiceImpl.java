@@ -1,12 +1,13 @@
 package com.example.bank.service;
 
-import com.bank.dto.TransactionDto;
-import com.bank.dto.TransferRequest;
-import com.bank.exception.*;
-import com.bank.model.*;
-import com.bank.model.Transaction;
-import com.bank.repository.CardRepository;
-import com.bank.repository.TransactionRepository;
+
+import com.example.bank.dto.TransactionDto;
+import com.example.bank.dto.TransferRequest;
+import com.example.bank.exception.*;
+import com.example.bank.model.*;
+import com.example.bank.model.Transaction;
+import com.example.bank.repository.CardRepository;
+import com.example.bank.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,20 +42,16 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public TransactionDto transfer(TransferRequest request) {
-        // Проверяем карты
         Card fromCard = cardRepository.findById(request.getFromCardId())
                 .orElseThrow(() -> new CardNotFoundException("Source card not found"));
         Card toCard = cardRepository.findById(request.getToCardId())
                 .orElseThrow(() -> new CardNotFoundException("Destination card not found"));
 
-        // Валидация
         validateTransfer(fromCard, toCard, request.getAmount());
 
-        // Выполняем перевод
         fromCard.setBalance(fromCard.getBalance().subtract(request.getAmount()));
         toCard.setBalance(toCard.getBalance().add(request.getAmount()));
 
-        // Создаем транзакции
         Transaction withdrawal = createTransaction(
                 request.getAmount().negate(),
                 "TRANSFER_OUT",
@@ -68,7 +66,6 @@ public class TransactionServiceImpl implements TransactionService {
                 toCard
         );
 
-        // Сохраняем
         cardRepository.save(fromCard);
         cardRepository.save(toCard);
         transactionRepository.save(withdrawal);
@@ -78,20 +75,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private void validateTransfer(Card fromCard, Card toCard, BigDecimal amount) {
-        // Проверка статуса карт
         if (fromCard.getStatus() != Card.CardStatus.ACTIVE) {
             throw new CardOperationException("Source card is not active");
         }
         if (toCard.getStatus() != Card.CardStatus.ACTIVE) {
             throw new CardOperationException("Destination card is not active");
         }
-
-        // Проверка баланса
         if (fromCard.getBalance().compareTo(amount) < 0) {
             throw new InsufficientFundsException("Insufficient funds on source card");
         }
 
-        // Проверка лимитов
         BigDecimal dailySpent = transactionRepository.sumAmountByCardAndDate(
                 fromCard.getId(),
                 LocalDateTime.now().withHour(0).withMinute(0),

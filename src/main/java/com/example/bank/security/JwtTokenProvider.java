@@ -1,5 +1,6 @@
 package com.example.bank.security;
 
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -15,8 +16,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 @Component
 public class JwtTokenProvider {
+
     @Value("${jwt.secret}")
     private String secret;
 

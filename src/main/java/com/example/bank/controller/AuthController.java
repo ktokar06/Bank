@@ -1,14 +1,16 @@
 package com.example.bank.controller;
 
-import com.bank.dto.LoginRequest;
-import com.bank.dto.RegisterRequest;
-import com.bank.service.AuthService;
+
+import com.example.bank.dto.LoginRequest;
+import com.example.bank.dto.RegisterRequest;
+import com.example.bank.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/auth")

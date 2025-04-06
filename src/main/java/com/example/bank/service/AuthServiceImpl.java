@@ -1,11 +1,12 @@
 package com.example.bank.service;
 
-import com.bank.dto.LoginRequest;
-import com.bank.dto.RegisterRequest;
-import com.bank.exception.UserAlreadyExistsException;
-import com.bank.model.User;
-import com.bank.repository.UserRepository;
-import com.bank.security.JwtTokenProvider;
+
+import com.example.bank.dto.LoginRequest;
+import com.example.bank.dto.RegisterRequest;
+import com.example.bank.exception.UserAlreadyExistsException;
+import com.example.bank.model.User;
+import com.example.bank.repository.UserRepository;
+import com.example.bank.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
 
 @Service
 @RequiredArgsConstructor

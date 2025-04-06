@@ -1,13 +1,15 @@
 package com.example.bank.controller;
 
-import com.bank.dto.UserDto;
-import com.bank.service.UserService;
+
+import com.example.bank.dto.UserDto;
+import com.example.bank.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/users")

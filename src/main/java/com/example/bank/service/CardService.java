@@ -1,9 +1,11 @@
 package com.example.bank.service;
 
-import com.bank.dto.CardDto;
-import com.bank.dto.CardLimitRequest;
+
+import com.example.bank.dto.CardDto;
+import com.example.bank.dto.CardLimitRequest;
 
 import java.util.List;
+
 
 public interface CardService {
     CardDto createCard(CardDto cardDto);

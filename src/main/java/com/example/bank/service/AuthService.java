@@ -1,7 +1,9 @@
 package com.example.bank.service;
 
-import com.bank.dto.LoginRequest;
-import com.bank.dto.RegisterRequest;
+
+import com.example.bank.dto.LoginRequest;
+import com.example.bank.dto.RegisterRequest;
+
 
 public interface AuthService {
     String login(LoginRequest request);

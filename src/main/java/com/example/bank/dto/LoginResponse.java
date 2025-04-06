@@ -1,7 +1,9 @@
 package com.example.bank.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 
 @Data
 @AllArgsConstructor

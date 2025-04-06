@@ -1,13 +1,17 @@
 package com.example.bank.service;
 
-import com.bank.dto.CardDto;
-import com.bank.dto.CardLimitRequest;
-import com.bank.exception.*;
-import com.bank.model.Card;
-import com.bank.model.User;
-import com.bank.repository.CardRepository;
-import com.bank.repository.UserRepository;
-import com.bank.security.CardDataEncryptor;
+
+import com.example.bank.dto.CardDto;
+import com.example.bank.dto.CardLimitRequest;
+import com.example.bank.exception.CardNotFoundException;
+import com.example.bank.exception.CardOperationException;
+import com.example.bank.exception.InvalidLimitException;
+import com.example.bank.exception.UserNotFoundException;
+import com.example.bank.model.Card;
+import com.example.bank.model.User;
+import com.example.bank.repository.CardRepository;
+import com.example.bank.repository.UserRepository;
+import com.example.bank.security.CardDataEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +55,6 @@ public class CardServiceImpl implements CardService {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + id));
 
-        // Маскируем номер карты перед возвратом
         CardDto dto = modelMapper.map(card, CardDto.class);
         dto.setNumber(CardDataEncryptor.maskCardNumber(card.getNumber()));
         return dto;

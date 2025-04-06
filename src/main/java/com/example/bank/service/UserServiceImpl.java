@@ -1,11 +1,12 @@
 package com.example.bank.service;
 
-import com.bank.dto.RegisterRequest;
-import com.bank.dto.UserDto;
-import com.bank.exception.UserAlreadyExistsException;
-import com.bank.exception.UserNotFoundException;
-import com.bank.model.User;
-import com.bank.repository.UserRepository;
+
+import com.example.bank.dto.RegisterRequest;
+import com.example.bank.dto.UserDto;
+import com.example.bank.exception.UserAlreadyExistsException;
+import com.example.bank.exception.UserNotFoundException;
+import com.example.bank.model.User;
+import com.example.bank.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

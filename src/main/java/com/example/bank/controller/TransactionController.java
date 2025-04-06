@@ -1,14 +1,16 @@
 package com.example.bank.controller;
 
-import com.bank.dto.TransactionDto;
-import com.bank.dto.TransferRequest;
-import com.bank.service.TransactionService;
+
+import com.example.bank.dto.TransactionDto;
+import com.example.bank.dto.TransferRequest;
+import com.example.bank.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/transactions")

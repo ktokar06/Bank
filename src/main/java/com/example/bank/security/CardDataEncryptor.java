@@ -8,20 +8,21 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public class CardDataEncryptor {
-    private static final String AES = "AES";
-    private static final int KEY_LENGTH = 128; // Вы можете выбрать между 128, 192 или 256
 
-    // Генерируем ключ один раз и используем его для всех операций шифрования/дешифровки
+public class CardDataEncryptor {
+
+    private static final String AES = "AES";
+    private static final int KEY_LENGTH = 128;
+
     private static SecretKey generateSecretKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(KEY_LENGTH, new SecureRandom()); // Используем криптографически безопасный источник случайных чисел
+        keyGen.init(KEY_LENGTH, new SecureRandom());
         return keyGen.generateKey();
     }
 
     public static String encrypt(String data) {
         try {
-            SecretKey secretKey = generateSecretKey(); // Генерируем новый ключ каждый раз
+            SecretKey secretKey = generateSecretKey();
             Cipher cipher = Cipher.getInstance(AES);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] encrypted = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
@@ -33,7 +34,7 @@ public class CardDataEncryptor {
 
     public static String decrypt(String encryptedData) {
         try {
-            SecretKey secretKey = generateSecretKey(); // Тот же самый ключ, что использовался для шифрования
+            SecretKey secretKey = generateSecretKey();
             Cipher cipher = Cipher.getInstance(AES);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decoded = Base64.getDecoder().decode(encryptedData);

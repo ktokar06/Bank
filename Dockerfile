@@ -1,13 +1,14 @@
-FROM openjdk:17-jdk-slim
-
+# Этап сборки
+FROM gradle:8.4-jdk17 AS build
 WORKDIR /app
+COPY build.gradle .
+COPY settings.gradle .
+COPY src ./src
+RUN gradle build --no-daemon -x test
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
-
-RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
-
-CMD ["./mvnw", "spring-boot:run"]
+# Этап запуска
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
