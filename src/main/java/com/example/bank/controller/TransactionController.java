@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
+
     private final TransactionService transactionService;
 
     @GetMapping("/card/{cardId}")
