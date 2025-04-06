@@ -3,6 +3,8 @@ package com.example.bank.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -25,12 +27,19 @@ public class User {
     private String username;
     private String role;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Card> cards;
+
+    public enum Role {
+        ADMIN,
+        USER
+    }
 }
