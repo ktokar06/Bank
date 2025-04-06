@@ -3,7 +3,6 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
-    container_name: bank_card_db
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: bank_card_db
@@ -11,8 +10,6 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
@@ -21,7 +18,6 @@ services:
 
   app:
     build: .
-    container_name: bank_card_app
     depends_on:
       db:
         condition: service_healthy
@@ -31,8 +27,3 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/bank_card_db?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
-    volumes:
-      - .:/app
-
-volumes:
-  mysql_data:

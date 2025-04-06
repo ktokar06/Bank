@@ -1,12 +1,6 @@
-FROM gradle:8.4-jdk17 AS build
-WORKDIR /app
-COPY build.gradle .
-COPY settings.gradle .
-COPY src ./src
-RUN gradle build --no-daemon -x test
-
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY  build/libs/bank-0.0.1-SNAPSHOT.jar app.jar
+RUN chmod +x /app/app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "/app/app.jar"]

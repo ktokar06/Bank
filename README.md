@@ -68,6 +68,4 @@ Username: root
 Password: password
 ```
 
-Тестовые данные должны были сохранится 
-
 Прогоны делел в Postman
