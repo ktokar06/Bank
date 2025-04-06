@@ -51,7 +51,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream()
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
                 .map(user -> {
                     UserDto dto = modelMapper.map(user, UserDto.class);
                     dto.setPassword(null);
