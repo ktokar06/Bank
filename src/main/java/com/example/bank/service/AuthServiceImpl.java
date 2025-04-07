@@ -43,14 +43,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new UserAlreadyExistsException("Username is already taken");
-        }
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new UserAlreadyExistsException("Email is already registered");
-        }
-
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
