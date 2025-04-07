@@ -69,3 +69,16 @@ Password: password
 ```
 
 Прогоны делел в Postman
+
+
+## Swagger UI
+
+```
+http://localhost:9090/swagger-ui/index.html
+```
+
+## OpenAPI документация
+
+```
+http://localhost:9090/v3/api-docs
+```

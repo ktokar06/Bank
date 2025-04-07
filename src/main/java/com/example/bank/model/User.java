@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -29,10 +31,12 @@ public class User implements UserDetails {
     private String username;
     private String role;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -61,5 +65,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+
+    public enum Role {
+        ADMIN,
+        USER
     }
 }

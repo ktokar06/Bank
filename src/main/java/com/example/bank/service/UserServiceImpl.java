@@ -1,6 +1,5 @@
 package com.example.bank.service;
 
-
 import com.example.bank.dto.RegisterRequest;
 import com.example.bank.dto.UserDto;
 import com.example.bank.exception.UserAlreadyExistsException;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +52,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream()
+        List<User> users = new ArrayList<>(userRepository.findAll());
+
+        return users.stream()
                 .map(user -> {
                     UserDto dto = modelMapper.map(user, UserDto.class);
                     dto.setPassword(null);
