@@ -42,6 +42,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Card> cards;
 
+    public enum Role {
+        ADMIN,
+        USER
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -65,9 +70,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
-
-    public enum Role {
-        ADMIN,
-        USER
     }
 }

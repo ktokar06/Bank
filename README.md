@@ -10,7 +10,7 @@
 | `/api/users`                                  | GET    | Получить всех пользователей              | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
 | `/api/users/{id}`                             | GET    | Получить пользователя по ID              | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
 
-**Примеры пользователей и карт:**
+**Примеры:**
 ```json
 [
   {
@@ -19,6 +19,12 @@
     "email": "alex.petrov@example.com",
     "role": "USER"
   },
+  
+  {
+    "username": "anna_ivanova",
+    "password": "annaPass123"
+  },
+  
   {
     "number": "5555345678901234",
     "expirationDate": "2026-05-31",
@@ -29,7 +35,15 @@
     "dailyLimit": 3000.00,
     "monthlyLimit": 10000.00,
     "userId": 3
+  },
+  
+  {
+    "fromCardId": 1,  // ID карты 
+    "toCardId": 2,    
+    "amount": 500.00,
+    "description": "Оплата за услуги"
   }
+  
 ]
 ```
 
