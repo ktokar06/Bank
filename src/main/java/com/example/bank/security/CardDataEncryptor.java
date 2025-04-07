@@ -12,19 +12,23 @@ import java.util.Base64;
 
 public class CardDataEncryptor {
 
-    private static final String AES = "AES";
-    private static final int KEY_LENGTH = 128;
+    private static SecretKey secretKey;
+    private static final String ALGORITHM = "AES";
+    private static final int KEY_SIZE = 256;
 
-    private static SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(KEY_LENGTH, new SecureRandom());
-        return keyGen.generateKey();
+    static {
+        try {
+            KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
+            keyGen.init(KEY_SIZE, new SecureRandom());
+            secretKey = keyGen.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to generate secret key", e);
+        }
     }
 
     public static String encrypt(String data) {
         try {
-            SecretKey secretKey = generateSecretKey();
-            Cipher cipher = Cipher.getInstance(AES);
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] encrypted = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encrypted);
@@ -35,8 +39,7 @@ public class CardDataEncryptor {
 
     public static String decrypt(String encryptedData) {
         try {
-            SecretKey secretKey = generateSecretKey();
-            Cipher cipher = Cipher.getInstance(AES);
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decoded = Base64.getDecoder().decode(encryptedData);
             byte[] decrypted = cipher.doFinal(decoded);

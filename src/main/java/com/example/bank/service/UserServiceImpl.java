@@ -76,8 +76,8 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public UserDto updateUser(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
@@ -100,9 +100,16 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
 
+        if (userDto.getRole() != null) {
+            user.setRole(userDto.getRole());
+        }
+
         user.setUpdatedAt(LocalDateTime.now());
         User updatedUser = userRepository.save(user);
-        return modelMapper.map(updatedUser, UserDto.class);
+
+        UserDto responseDto = modelMapper.map(updatedUser, UserDto.class);
+        responseDto.setPassword(null);
+        return responseDto;
     }
 
     @Transactional

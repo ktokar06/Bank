@@ -105,4 +105,28 @@ public class TransactionServiceImpl implements TransactionService {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    private void validateTransfer(Card fromCard, BigDecimal amount) {
+        LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        BigDecimal dailySpent = transactionRepository.sumAmountByCardAndDate(
+                fromCard.getId(),
+                startOfDay,
+                LocalDateTime.now()
+        ).orElse(BigDecimal.ZERO);
+
+        if (dailySpent.add(amount).compareTo(fromCard.getDailyLimit()) > 0) {
+            throw new LimitExceededException("Daily limit exceeded");
+        }
+
+        LocalDateTime startOfMonth = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0);
+        BigDecimal monthlySpent = transactionRepository.sumAmountByCardAndDate(
+                fromCard.getId(),
+                startOfMonth,
+                LocalDateTime.now()
+        ).orElse(BigDecimal.ZERO);
+
+        if (monthlySpent.add(amount).compareTo(fromCard.getMonthlyLimit()) > 0) {
+            throw new LimitExceededException("Monthly limit exceeded");
+        }
+    }
 }

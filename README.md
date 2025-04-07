@@ -5,12 +5,19 @@
 | `/api/cards`                                  | GET    | Получить все карты                       | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
 | `/api/cards/{id}`                             | GET    | Получить карту по ID                     | USER, ADMIN   | `Authorization: Bearer <token>`       | -                                                                                  |
 | `/api/cards`                                  | POST   | Создать новую карту                      | ADMIN         | `Authorization: Bearer <token>`, `Content-Type: application/json` | `{"number": "4111111111111111", "expirationDate": "2025-12-31", ...}`              |
+| `/api/cards/my`                               | GET    | Получить карты текущего пользователя     | USER          | `Authorization: Bearer <token>`       | -                                                                                  |
+| `/api/cards/{id}/limits`                      | PUT    | Обновить лимиты карты                    | ADMIN         | `Authorization: Bearer <token>`, `Content-Type: application/json` | `{"dailyLimit": 5000.00, "monthlyLimit": 15000.00}`                                |
+| `/api/cards/{id}/block`                       | PUT    | Заблокировать карту                      | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
+| `/api/cards/{id}/activate`                    | PUT    | Активировать карту                       | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
+| `/api/cards/{id}`                             | DELETE | Удалить карту                            | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
 | `/api/transactions/card/{cardId}`             | GET    | Получить транзакции по карте             | USER, ADMIN   | `Authorization: Bearer <token>`       | -                                                                                  |
 | `/api/transactions/transfer`                  | POST   | Выполнить перевод                        | USER          | `Authorization: Bearer <token>`, `Content-Type: application/json` | `{"fromCardId": 5, "toCardId": 4, "amount": 100.00, "description": "Test transfer"}` |
 | `/api/users`                                  | GET    | Получить всех пользователей              | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
 | `/api/users/{id}`                             | GET    | Получить пользователя по ID              | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
+| `/api/users/{id}`                             | PUT    | Обновить пользователя                    | ADMIN         | `Authorization: Bearer <token>`, `Content-Type: application/json` | `{"username": "updated_user", "email": "updated@example.com"}`                      |
+| `/api/users/{id}`                             | DELETE | Удалить пользователя                     | ADMIN         | `Authorization: Bearer <token>`       | -                                                                                  |
 
-**Примеры пользователей и карт:**
+**Примеры:**
 ```json
 [
   {
@@ -18,6 +25,10 @@
     "password": "securePass123",
     "email": "alex.petrov@example.com",
     "role": "USER"
+  },
+  {
+    "username": "anna_ivanova",
+    "password": "annaPass123"
   },
   {
     "number": "5555345678901234",
@@ -29,6 +40,16 @@
     "dailyLimit": 3000.00,
     "monthlyLimit": 10000.00,
     "userId": 3
+  },
+  {
+    "fromCardId": 1,
+    "toCardId": 2,
+    "amount": 500.00,
+    "description": "Оплата за услуги"
+  },
+  {
+    "dailyLimit": 5000.00,
+    "monthlyLimit": 15000.00
   }
 ]
 ```
