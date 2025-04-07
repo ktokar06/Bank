@@ -33,12 +33,21 @@ class TransactionServiceUnitTest {
 
     @Test
     void transferExceedsDailyLimit() {
-        Card card = new Card();
-        card.setId(1L);
-        card.setDailyLimit(new BigDecimal("1000"));
-        card.setBalance(new BigDecimal("5000"));
+        // Mock source card (fromCard)
+        Card fromCard = new Card();
+        fromCard.setId(1L);
+        fromCard.setDailyLimit(new BigDecimal("100"));
+        fromCard.setBalance(new BigDecimal("500"));
+        fromCard.setStatus(Card.CardStatus.ACTIVE);  // Add this line
 
-        when(cardRepository.findById(1L)).thenReturn(Optional.of(card));
+        // Mock destination card (toCard)
+        Card toCard = new Card();
+        toCard.setId(2L);
+        toCard.setStatus(Card.CardStatus.ACTIVE);  // Optional but recommended
+
+        // Mock repository responses
+        when(cardRepository.findById(1L)).thenReturn(Optional.of(fromCard));
+        when(cardRepository.findById(2L)).thenReturn(Optional.of(toCard));
         when(transactionRepository.sumAmountByCardAndDate(anyLong(), any(), any()))
                 .thenReturn(Optional.of(new BigDecimal("900")));
 
