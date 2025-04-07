@@ -1,5 +1,6 @@
 package com.example.bank.service;
 
+
 import com.example.bank.dto.RegisterRequest;
 import com.example.bank.dto.UserDto;
 import com.example.bank.exception.UserAlreadyExistsException;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
