@@ -43,12 +43,13 @@ class AuthIntegrationTest {
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                    {
-                        "username": "kirill",
-                        "password": "password1234"
-                    }
-                """))
+                        {
+                            "username": "kirill",
+                            "password": "password1234"
+                        }
+                    """))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").exists());
     }
 }
