@@ -13,5 +13,4 @@ public class UserDto {
     private String password;
     private String email;
     private String role;
-    private Set<CardDto> cards;
 }
